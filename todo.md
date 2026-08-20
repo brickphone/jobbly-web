@@ -1,0 +1,4 @@
+- fix app screenshot
+- add android with waitlist.
+- multilanguage support
+- fix claude errors

@@ -1,13 +1,17 @@
 import Image from "next/image";
+import { AndroidWaitlistButton } from "@/components/AndroidWaitlistButton";
 import { AppStoreButton } from "@/components/AppStoreButton";
 import { RevealObserver } from "@/components/RevealObserver";
 import { SiteHeader } from "@/components/SiteHeader";
 import { WaitlistForm } from "@/components/WaitlistForm";
 import { siteConfig } from "@/lib/config";
+import { fetchJobCount, formatJobCount } from "@/lib/jobs";
 
 const year = new Date().getFullYear();
 
-export default function Home() {
+export default async function Home() {
+  const jobCount = formatJobCount(await fetchJobCount());
+
   return (
     <>
       <RevealObserver />
@@ -17,17 +21,17 @@ export default function Home() {
       <main id="main">
         <section className="hero" id="top">
           <div className="hero-copy reveal is-visible">
-            <div className="eyebrow"><span className="eyebrow-dot" /> Jobbsökandet, fast enklare</div>
             <h1>Svep höger.<br /><span>Vi söker jobbet åt dig.</span></h1>
             <p className="hero-lead">Upptäck jobb som passar dig och ansök med ett svep. Jobbly fyller i, skickar och håller koll — så att du kan lägga tiden på nästa steg.</p>
             <div className="hero-actions">
               <AppStoreButton />
-              <a className="text-link" href="#sa-funkar-det">Se hur det fungerar <span aria-hidden="true">↓</span></a>
+              <AndroidWaitlistButton />
             </div>
             <div className="hero-note">
-              <span className="mini-avatars" aria-hidden="true"><i>J</i><i>A</i><i>S</i></span>
-              <span>Byggt för jobbsökare i Sverige</span>
+              <strong>{jobCount}+ jobb</strong>
+              <span>direkt från Platsbanken, uppdaterade varje dag</span>
             </div>
+            <a className="text-link hero-link" href="#sa-funkar-det">Se hur det fungerar <span aria-hidden="true">↓</span></a>
           </div>
 
           <div className="hero-visual reveal is-visible" aria-label="Jobbly-appen visar ett ledigt jobb">

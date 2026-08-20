@@ -11,7 +11,7 @@
   --radius-lg: 40px;
   --radius-md: 28px;
   --shadow: 0 26px 80px rgba(34, 82, 136, .13);
-  --rounded: ui-rounded, "SF Pro Rounded", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --rounded: ui-rounded, "SF Pro Rounded", var(--font-rounded-fallback), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 * { box-sizing: border-box; }
@@ -47,20 +47,23 @@ img { max-width: 100%; height: auto; }
 .hero h1 { max-width: 760px; margin: 0; font-size: clamp(55px, 6.2vw, 88px); line-height: .97; letter-spacing: -.068em; font-weight: 790; }
 .hero h1 span { color: var(--blue); }
 .hero-lead { max-width: 595px; margin: 31px 0 0; color: var(--ink-soft); font-size: clamp(18px, 1.5vw, 21px); line-height: 1.55; letter-spacing: -.018em; }
-.hero-actions { display: flex; align-items: center; gap: 26px; margin-top: 34px; }
-.app-store-button { width: max-content; min-width: 176px; min-height: 58px; padding: 9px 18px 9px 14px; display: inline-flex; align-items: center; gap: 11px; border-radius: 15px; color: white; background: var(--ink); box-shadow: 0 12px 25px rgba(17,28,46,.14); transition: transform .2s, box-shadow .2s; }
-.app-store-button:hover { transform: translateY(-3px); box-shadow: 0 18px 32px rgba(17,28,46,.2); }
-.apple-mark { width: 27px; height: 30px; fill: currentColor; }
-.app-store-button > span { display: flex; flex-direction: column; font-size: 20px; line-height: .92; letter-spacing: -.025em; font-weight: 680; }
-.app-store-button small { margin-bottom: 5px; font-size: 10px; line-height: 1; letter-spacing: .02em; font-weight: 500; }
+.hero-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 14px; margin-top: 34px; }
+/* Both badges share one height so the pair reads as a set. Apple's lockup keeps
+   its own ratio; the Android button is built to match rather than to imitate. */
+.store-badge { display: inline-flex; border-radius: 9px; transition: transform .2s, box-shadow .2s; }
+.store-badge img { width: auto; height: 52px; }
+.store-badge:hover { transform: translateY(-3px); box-shadow: 0 14px 28px rgba(17,28,46,.18); }
+.android-badge { height: 52px; padding: 0 20px 0 16px; display: inline-flex; align-items: center; gap: 11px; border: 1px solid var(--line); border-radius: 9px; color: var(--ink); background: white; transition: transform .2s, border-color .2s, box-shadow .2s; }
+.android-badge:hover { transform: translateY(-3px); border-color: #c3d2e4; box-shadow: 0 14px 28px rgba(17,28,46,.12); }
+.android-badge svg { width: 22px; height: 22px; fill: currentColor; }
+.android-badge > span { display: flex; flex-direction: column; font-size: 15px; line-height: 1.05; letter-spacing: -.015em; font-weight: 760; }
+.android-badge small { margin-bottom: 3px; font-size: 9px; line-height: 1; letter-spacing: .08em; text-transform: uppercase; font-weight: 700; color: var(--ink-soft); }
 .text-link { padding: 10px 0 7px; border-bottom: 1px solid #bac5d3; font-size: 14px; font-weight: 720; }
 .text-link span { display: inline-block; margin-left: 7px; color: var(--blue); transition: transform .2s; }
 .text-link:hover span { transform: translateY(3px); }
-.hero-note { display: flex; align-items: center; gap: 12px; margin-top: 28px; color: #7d879a; font-size: 12px; font-weight: 650; }
-.mini-avatars { display: flex; }
-.mini-avatars i { width: 27px; height: 27px; margin-left: -7px; display: grid; place-items: center; border: 2px solid white; border-radius: 50%; color: white; background: var(--blue); font-size: 9px; font-style: normal; font-weight: 800; }
-.mini-avatars i:first-child { margin-left: 0; background: #182a46; }
-.mini-avatars i:last-child { background: #81b7ff; }
+.hero-link { display: inline-block; margin-top: 26px; }
+.hero-note { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; margin-top: 26px; color: #7d879a; font-size: 13px; font-weight: 620; }
+.hero-note strong { color: var(--ink); font-size: 15px; font-weight: 850; letter-spacing: -.01em; }
 
 .hero-visual { position: relative; height: 650px; display: grid; place-items: center; }
 .phone-glow { position: absolute; width: 520px; height: 590px; border-radius: 50%; background: radial-gradient(circle, rgba(138,195,255,.52), rgba(232,245,255,.28) 52%, transparent 72%); filter: blur(4px); }
@@ -182,7 +185,6 @@ img { max-width: 100%; height: auto; }
 .download-copy { position: relative; z-index: 2; align-self: center; }
 .download-copy h2 { margin: 0 0 25px; font-size: clamp(49px, 5.3vw, 73px); line-height: .98; letter-spacing: -.065em; }
 .download-copy > p:not(.kicker):not(.store-status) { max-width: 430px; margin: 0 0 29px; color: rgba(255,255,255,.78); font-size: 17px; line-height: 1.5; }
-.light-button { color: var(--ink); background: white; box-shadow: 0 15px 35px rgba(12,59,121,.2); }
 .store-status { margin: 13px 0 0; color: rgba(255,255,255,.65); font-size: 10px; }
 .download-phone { position: relative; align-self: end; height: 525px; }
 .download-phone::before { content: ""; position: absolute; width: 440px; height: 440px; left: 50%; top: 15%; border: 1px solid rgba(255,255,255,.22); border-radius: 50%; transform: translateX(-50%); box-shadow: 0 0 0 80px rgba(255,255,255,.05), 0 0 0 160px rgba(255,255,255,.035); }
