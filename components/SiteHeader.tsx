@@ -18,7 +18,7 @@ export function SiteHeader() {
     <header className={`site-header ${scrolled ? "is-scrolled" : ""}`}>
       <div className="header-left">
         <a className="wordmark" href="/#top" aria-label="Jobbly, startsida" onClick={close}>Jobbly<span>.</span></a>
-        <a className="audience-link" href="/for-arbetsgivare" onClick={close}>Arbetsgivare</a>
+        <a className="audience-link" href="/arbetsgivare" onClick={close}>Arbetsgivare</a>
       </div>
       <nav className="desktop-nav" aria-label="Huvudmeny">
         <a href="/#sa-funkar-det">Så funkar det</a>
@@ -33,7 +33,7 @@ export function SiteHeader() {
         <a href="/#sa-funkar-det" onClick={close}>Så funkar det</a>
         <a href="/#tryggt" onClick={close}>Trygghet</a>
         <a href="/#fragor" onClick={close}>Frågor</a>
-        <a href="/for-arbetsgivare" onClick={close}>Arbetsgivare</a>
+        <a href="/arbetsgivare" onClick={close}>Arbetsgivare</a>
         <a href="/#ladda-ner" onClick={close}>Hämta appen</a>
       </nav>
     </header>

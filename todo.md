@@ -1,4 +1,3 @@
-- add android with waitlist.
-- för arbetsgivare tab
+- emails when waitlist
 - multilanguage support
 - fix claude errors

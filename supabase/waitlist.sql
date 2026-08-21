@@ -1,22 +1,26 @@
 -- Waitlist schema. Runs in its OWN Supabase project, separate from the app's,
 -- so the marketing site never holds a credential that can reach user data.
 --
--- Paste into the new project's SQL editor and run once.
+-- Safe to run repeatedly: it creates the table if missing and adds any columns
+-- an older version of this file didn't have.
 
 create table if not exists public.waitlist (
     id uuid primary key default gen_random_uuid(),
     email text not null,
     source text not null default 'web',
-    -- Everything below is filled in by the employer modal only; the Android
-    -- form sends email + source and leaves these null.
-    company text,
-    website text,
-    contact_name text,
-    phone text,
-    hiring_needs text,
-    notes text,
     created_at timestamptz not null default now()
 );
+
+-- Employer modal fields. Separate from the create above, because `create table
+-- if not exists` is skipped entirely on an existing table and would leave these
+-- missing.
+alter table public.waitlist
+    add column if not exists company text,
+    add column if not exists website text,
+    add column if not exists contact_name text,
+    add column if not exists phone text,
+    add column if not exists hiring_needs text,
+    add column if not exists notes text;
 
 -- Case-insensitive uniqueness: a duplicate signup fails at the database rather
 -- than needing a read to check for it first.
@@ -43,6 +47,10 @@ create policy waitlist_anon_insert on public.waitlist
         and coalesce(length(hiring_needs), 0) <= 2000
         and coalesce(length(notes), 0) <= 2000
     );
+
+-- PostgREST caches the schema; without this the new columns stay invisible and
+-- inserts fail with PGRST204 until the cache happens to refresh on its own.
+notify pgrst, 'reload schema';
 
 -- Read your signups from the dashboard or with the service role key, never
 -- from the website:
