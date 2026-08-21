@@ -1,4 +1,4 @@
-- fix app screenshot
 - add android with waitlist.
+- för arbetsgivare tab
 - multilanguage support
 - fix claude errors
