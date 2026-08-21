@@ -4,7 +4,7 @@ const SUPABASE_URL = process.env.WAITLIST_SUPABASE_URL;
 const SUPABASE_ANON_KEY = process.env.WAITLIST_SUPABASE_ANON_KEY;
 
 const EMAIL_PATTERN = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
-const ALLOWED_SOURCES = new Set(["web", "android-hero"]);
+const ALLOWED_SOURCES = new Set(["web", "android-hero", "employer"]);
 
 // Per-instance and therefore only a speed bump — serverless spreads requests
 // across lambdas. The unique index is what actually keeps the table clean;
@@ -31,15 +31,16 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ ok: false, error: "unavailable" }, { status: 503 });
   }
 
-  let body: { email?: unknown; source?: unknown; company?: unknown };
+  let body: Record<string, unknown>;
   try {
     body = await request.json();
   } catch {
     return NextResponse.json({ ok: false, error: "invalid" }, { status: 400 });
   }
 
-  // Honeypot: a real person never fills a field they cannot see.
-  if (typeof body.company === "string" && body.company.trim() !== "") return accepted;
+  // Honeypot: a real person never fills a field they cannot see. Named `website_url`
+  // rather than `company`, because the employer modal has a genuine company field.
+  if (typeof body.website_url === "string" && body.website_url.trim() !== "") return accepted;
 
   const email = String(body.email ?? "").trim().toLowerCase();
   if (!EMAIL_PATTERN.test(email) || email.length > 254) {
@@ -52,6 +53,24 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ ok: false, error: "rate_limited" }, { status: 429 });
   }
 
+  // Optional detail from the employer modal. Trimmed and capped here as well as
+  // in the RLS policy, so an oversized value fails fast with a clear message.
+  const optional = (key: string, max: number) => {
+    const value = String(body[key] ?? "").trim();
+    return value === "" ? null : value.slice(0, max);
+  };
+
+  const row = {
+    email,
+    source,
+    company: optional("company", 200),
+    website: optional("website", 300),
+    contact_name: optional("contact_name", 200),
+    phone: optional("phone", 40),
+    hiring_needs: optional("hiring_needs", 2000),
+    notes: optional("notes", 2000),
+  };
+
   const response = await fetch(`${SUPABASE_URL}/rest/v1/waitlist`, {
     method: "POST",
     headers: {
@@ -60,7 +79,7 @@ export async function POST(request: NextRequest) {
       "Content-Type": "application/json",
       Prefer: "return=minimal",
     },
-    body: JSON.stringify({ email, source }),
+    body: JSON.stringify(row),
   });
 
   // 409 is the unique index rejecting an address that's already signed up.

@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useId, useState } from "react";
 
 const IDLE = "Ingen spam. Bara en notis när Android närmar sig.";
 
@@ -9,6 +9,8 @@ type Props = { source?: "web" | "android-hero" };
 export function WaitlistForm({ source = "web" }: Props) {
   const [message, setMessage] = useState(IDLE);
   const [state, setState] = useState<"idle" | "sending" | "done" | "error">("idle");
+  // The employer page renders this twice; ids must not collide.
+  const fieldId = useId();
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -26,7 +28,7 @@ export function WaitlistForm({ source = "web" }: Props) {
       const response = await fetch("/api/waitlist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, source, company: data.get("company") ?? "" }),
+        body: JSON.stringify({ email, source, website_url: data.get("website_url") ?? "" }),
       });
 
       if (response.ok) {
@@ -56,9 +58,9 @@ export function WaitlistForm({ source = "web" }: Props) {
     // rather than two siblings needing to be dragged back together.
     <div className="waitlist">
       <form className="waitlist-form" onSubmit={submit} noValidate>
-        <label className="sr-only" htmlFor="waitlist-email">Din mejladress</label>
+        <label className="sr-only" htmlFor={fieldId}>Din mejladress</label>
         <input
-          id="waitlist-email"
+          id={fieldId}
           name="email"
           type="email"
           autoComplete="email"
@@ -69,7 +71,7 @@ export function WaitlistForm({ source = "web" }: Props) {
         {/* Honeypot — hidden from people, irresistible to bots. */}
         <input
           className="sr-only"
-          name="company"
+          name="website_url"
           type="text"
           tabIndex={-1}
           autoComplete="off"
