@@ -309,7 +309,7 @@ img { max-width: 100%; height: auto; }
   .hero h1 { font-size: 49px; line-height: 1.01; }
   .hero-lead { margin-top: 23px; font-size: 15px; }
   .hero-actions { flex-direction: column; gap: 13px; margin-top: 27px; }
-  .hero-note { margin-top: 21px; }
+  .hero-note { justify-content: center; margin-top: 21px; text-align: center; }
   .hero-visual { height: 515px; margin-top: 0; }
   .device-frame { --bezel: 9px; --outer-radius: 47px; width: 258px; }
   .phone-glow { width: 400px; height: 470px; }

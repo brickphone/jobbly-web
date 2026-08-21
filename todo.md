@@ -1,3 +1,5 @@
+- analytics
+
 - emails when waitlist
 - multilanguage support
 - fix claude errors
