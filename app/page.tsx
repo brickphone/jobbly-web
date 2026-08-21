@@ -36,7 +36,9 @@ export default async function Home() {
 
           <div className="hero-visual reveal is-visible" aria-label="Jobbly-appen visar ett ledigt jobb">
             <div className="blue-orbit orbit-one" /><div className="blue-orbit orbit-two" /><div className="phone-glow" />
-            <Image className="phone-shot" src="/assets/jobbly-app.png" width={693} height={1472} priority sizes="(max-width: 760px) 72vw, 430px" alt="Jobbly på iPhone med ett jobbkort och knappen Ansök" />
+            <div className="device-frame">
+              <Image src="/assets/jobbly-app-swipe.png" width={1206} height={2622} priority sizes="(max-width: 520px) 74vw, 330px" alt="Jobbly på iPhone med ett jobbkort och knappen Ansök" />
+            </div>
             <div className="float-card float-match"><span className="float-icon sparkle" aria-hidden="true">✦</span><span><strong>Nytt jobb för dig</strong><small>Matchar din profil</small></span></div>
             <div className="float-card float-sent"><span className="float-icon check" aria-hidden="true">✓</span><span><strong>Ansökan skickad</strong><small>Klart på några sekunder</small></span></div>
           </div>
@@ -117,7 +119,7 @@ export default async function Home() {
         <section className="download section" id="ladda-ner">
           <div className="download-main reveal">
             <div className="download-copy"><p className="kicker light">Jobbly för iPhone</p><h2>Ditt nästa jobb<br />kan vara ett svep bort.</h2><p>Ladda ner Jobbly och gör jobbsökandet till den enkla delen.</p><AppStoreButton light />{!siteConfig.appStoreUrl && <p className="store-status">App Store-länk kommer vid lansering.</p>}</div>
-            <div className="download-phone" aria-hidden="true"><Image src="/assets/jobbly-app.png" alt="" width={693} height={1472} sizes="350px" /></div>
+            <div className="download-phone" aria-hidden="true"><div className="device-frame"><Image src="/assets/jobbly-app-swipe.png" alt="" width={1206} height={2622} sizes="300px" /></div></div>
           </div>
           <aside className="android-card reveal" id="android">
             <div><span className="android-label">ANDROID</span><h3>Android kommer senare.</h3><p>Lämna din mejl så säger vi till när Jobbly är på väg till Google Play.</p></div>

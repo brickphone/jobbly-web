@@ -70,7 +70,11 @@ img { max-width: 100%; height: auto; }
 .blue-orbit { position: absolute; border: 1px solid rgba(47,130,246,.14); border-radius: 50%; }
 .orbit-one { width: 540px; height: 540px; }
 .orbit-two { width: 650px; height: 650px; border-style: dashed; animation: spin 32s linear infinite; }
-.phone-shot { position: relative; z-index: 2; width: 338px; height: auto; filter: drop-shadow(0 35px 35px rgba(24,52,85,.22)); transform: rotate(2.4deg); }
+/* The iPhone body is drawn in CSS so it stays sharp at any DPR. The screenshot
+   is a plain rectangle, so it gets clipped here: inner radius = outer radius
+   minus the bezel width, which keeps the two curves concentric. */
+.device-frame { --bezel: 12px; --outer-radius: 60px; position: relative; z-index: 2; width: 330px; padding: var(--bezel); border-radius: var(--outer-radius); background: linear-gradient(146deg, #565c66 0%, #1b1f25 18%, #0e1115 50%, #1b1f25 82%, #565c66 100%); box-shadow: 0 42px 64px rgba(24,52,85,.3), 0 6px 16px rgba(24,52,85,.16), inset 0 0 0 1px rgba(255,255,255,.12); }
+.device-frame img { display: block; width: 100%; height: auto; border-radius: calc(var(--outer-radius) - var(--bezel)); }
 .float-card { position: absolute; z-index: 4; min-width: 198px; padding: 13px 16px 13px 12px; display: flex; align-items: center; gap: 11px; border: 1px solid rgba(255,255,255,.86); border-radius: 18px; background: rgba(255,255,255,.9); box-shadow: 0 16px 42px rgba(49,89,132,.18); backdrop-filter: blur(16px); }
 .float-card > span:last-child { display: flex; flex-direction: column; gap: 3px; }
 .float-card strong { font-size: 13px; letter-spacing: -.01em; }
@@ -78,8 +82,8 @@ img { max-width: 100%; height: auto; }
 .float-icon { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 11px; font-size: 16px; font-weight: 800; }
 .float-icon.sparkle { color: var(--blue); background: var(--blue-soft); }
 .float-icon.check { color: #15865e; background: #e5f8f0; }
-.float-match { top: 145px; left: -28px; animation: float 5s ease-in-out infinite; }
-.float-sent { right: -15px; bottom: 135px; animation: float 5.4s ease-in-out infinite reverse; }
+.float-match { top: 104px; left: -76px; animation: float 5s ease-in-out infinite; }
+.float-sent { right: -58px; bottom: 152px; animation: float 5.4s ease-in-out infinite reverse; }
 
 .ticker { width: 100%; padding: 17px 0; overflow: hidden; color: white; background: var(--blue); transform: rotate(-1.15deg) scale(1.02); }
 .ticker-track { width: max-content; display: flex; align-items: center; gap: 34px; animation: ticker 28s linear infinite; }
@@ -188,7 +192,7 @@ img { max-width: 100%; height: auto; }
 .store-status { margin: 13px 0 0; color: rgba(255,255,255,.65); font-size: 10px; }
 .download-phone { position: relative; align-self: end; height: 525px; }
 .download-phone::before { content: ""; position: absolute; width: 440px; height: 440px; left: 50%; top: 15%; border: 1px solid rgba(255,255,255,.22); border-radius: 50%; transform: translateX(-50%); box-shadow: 0 0 0 80px rgba(255,255,255,.05), 0 0 0 160px rgba(255,255,255,.035); }
-.download-phone img { position: absolute; z-index: 2; top: 24px; left: 50%; width: 310px; max-width: none; filter: drop-shadow(0 28px 35px rgba(7,42,92,.28)); transform: translateX(-50%) rotate(3deg); }
+.download-phone .device-frame { position: absolute; z-index: 2; top: 24px; left: 50%; width: 300px; transform: translateX(-50%); }
 .android-card { margin-top: 20px; padding: 40px 45px; display: grid; grid-template-columns: 1fr minmax(420px, .8fr); align-items: center; gap: 45px; border: 1px solid var(--line); border-radius: 28px; background: #f7faff; }
 .android-card h3 { margin: 10px 0 7px; font-size: 28px; letter-spacing: -.04em; }
 .android-card p { margin: 0; color: var(--ink-soft); font-size: 13px; line-height: 1.45; }
@@ -241,7 +245,7 @@ img { max-width: 100%; height: auto; }
   .hero { min-height: 790px; padding-inline: 40px; grid-template-columns: minmax(0,1fr) 390px; gap: 25px; }
   .hero h1 { font-size: 62px; }
   .hero-visual { height: 590px; }
-  .phone-shot { width: 305px; }
+  .device-frame { --bezel: 11px; --outer-radius: 55px; width: 300px; }
   .float-match { left: -18px; }
   .float-sent { right: -25px; }
   .orbit-one { width: 450px; height: 450px; }
@@ -267,7 +271,7 @@ img { max-width: 100%; height: auto; }
   .hero h1 { font-size: clamp(49px, 13vw, 70px); }
   .hero-lead { max-width: 570px; font-size: 17px; }
   .hero-visual { width: 100%; height: 580px; margin-top: 10px; }
-  .phone-shot { width: 300px; }
+  .device-frame { --bezel: 11px; --outer-radius: 53px; width: 292px; }
   .float-match { left: max(2px, calc(50% - 235px)); }
   .float-sent { right: max(2px, calc(50% - 240px)); }
   .section { padding: 100px 24px; }
@@ -302,7 +306,7 @@ img { max-width: 100%; height: auto; }
   .hero-actions { flex-direction: column; gap: 13px; margin-top: 27px; }
   .hero-note { margin-top: 21px; }
   .hero-visual { height: 515px; margin-top: 0; }
-  .phone-shot { width: 265px; }
+  .device-frame { --bezel: 9px; --outer-radius: 47px; width: 258px; }
   .phone-glow { width: 400px; height: 470px; }
   .orbit-one { width: 365px; height: 365px; }
   .orbit-two { width: 445px; height: 445px; }
@@ -336,7 +340,7 @@ img { max-width: 100%; height: auto; }
   .download-main { min-height: 800px; padding: 48px 22px 0; border-radius: 30px; }
   .download-copy h2 { font-size: 46px; }
   .download-phone { height: 410px; }
-  .download-phone img { width: 270px; }
+  .download-phone .device-frame { --bezel: 9px; --outer-radius: 47px; width: 258px; }
   .download-phone::before { width: 330px; height: 330px; }
   .android-card { padding: 30px 20px; }
   .waitlist-form { grid-template-columns: 1fr; }
