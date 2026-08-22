@@ -1,13 +1,13 @@
 "use client";
 
 import { FormEvent, useId, useState } from "react";
+import { getDictionary, type Locale } from "@/lib/i18n";
 
-const IDLE = "Ingen spam. Bara en notis när Android närmar sig.";
+type Props = { locale: Locale; source?: "web" | "android-hero" | "employer" };
 
-type Props = { source?: "web" | "android-hero" };
-
-export function WaitlistForm({ source = "web" }: Props) {
-  const [message, setMessage] = useState(IDLE);
+export function WaitlistForm({ locale, source = "web" }: Props) {
+  const t = getDictionary(locale).waitlist;
+  const [message, setMessage] = useState(t.idle);
   const [state, setState] = useState<"idle" | "sending" | "done" | "error">("idle");
   // The employer page renders this twice; ids must not collide.
   const fieldId = useId();
@@ -22,7 +22,7 @@ export function WaitlistForm({ source = "web" }: Props) {
     if (!email) return;
 
     setState("sending");
-    setMessage("Skickar …");
+    setMessage(t.sending);
 
     try {
       const response = await fetch("/api/waitlist", {
@@ -34,7 +34,7 @@ export function WaitlistForm({ source = "web" }: Props) {
       if (response.ok) {
         form.reset();
         setState("done");
-        setMessage("Tack! Vi hör av oss när Android är på väg.");
+        setMessage(t.done);
         return;
       }
 
@@ -42,14 +42,14 @@ export function WaitlistForm({ source = "web" }: Props) {
       setState("error");
       setMessage(
         error === "invalid_email"
-          ? "Kontrollera mejladressen och försök igen."
+          ? t.invalid
           : error === "rate_limited"
-            ? "För många försök. Vänta en minut och försök igen."
-            : "Något gick fel. Försök igen om en stund.",
+            ? t.rateLimited
+            : t.failed,
       );
     } catch {
       setState("error");
-      setMessage("Något gick fel. Försök igen om en stund.");
+      setMessage(t.failed);
     }
   }
 
@@ -58,13 +58,13 @@ export function WaitlistForm({ source = "web" }: Props) {
     // rather than two siblings needing to be dragged back together.
     <div className="waitlist">
       <form className="waitlist-form" onSubmit={submit} noValidate>
-        <label className="sr-only" htmlFor={fieldId}>Din mejladress</label>
+        <label className="sr-only" htmlFor={fieldId}>{t.emailLabel}</label>
         <input
           id={fieldId}
           name="email"
           type="email"
           autoComplete="email"
-          placeholder="din@mejl.se"
+          placeholder={t.placeholder}
           required
           disabled={state === "sending"}
         />
@@ -79,7 +79,7 @@ export function WaitlistForm({ source = "web" }: Props) {
           defaultValue=""
         />
         <button type="submit" disabled={state === "sending"}>
-          {state === "sending" ? "Skickar …" : "Anmäl intresse"} <span aria-hidden="true">→</span>
+          {state === "sending" ? t.sending : t.cta} <span aria-hidden="true">→</span>
         </button>
       </form>
       <p className="form-note" aria-live="polite">{message}</p>

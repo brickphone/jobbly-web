@@ -3,10 +3,12 @@
 import { FormEvent, useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { siteConfig } from "@/lib/config";
+import { getDictionary, type Locale } from "@/lib/i18n";
 
-type Props = { label?: string; className?: string };
+type Props = { locale: Locale; className?: string };
 
-export function EmployerWaitlist({ label = "Gå med i väntelistan", className = "" }: Props) {
+export function EmployerWaitlist({ locale, className = "" }: Props) {
+  const t = getDictionary(locale).employer.modal;
   const [open, setOpen] = useState(false);
   const [state, setState] = useState<"idle" | "sending" | "done" | "error">("idle");
   const [error, setError] = useState("");
@@ -72,21 +74,21 @@ export function EmployerWaitlist({ label = "Gå med i väntelistan", className =
       setState("error");
       setError(
         body.error === "invalid_email"
-          ? "Kontrollera mejladressen och försök igen."
+          ? getDictionary(locale).waitlist.invalid
           : body.error === "rate_limited"
-            ? "För många försök. Vänta en minut och försök igen."
-            : "Något gick fel. Försök igen om en stund.",
+            ? getDictionary(locale).waitlist.rateLimited
+            : getDictionary(locale).waitlist.failed,
       );
     } catch {
       setState("error");
-      setError("Något gick fel. Försök igen om en stund.");
+      setError(getDictionary(locale).waitlist.failed);
     }
   }
 
   return (
     <>
       <button type="button" className={`pill-cta ${className}`} onClick={() => setOpen(true)}>
-        {label} <span aria-hidden="true">→</span>
+        {t.cta} <span aria-hidden="true">→</span>
       </button>
 
       {open && mounted && createPortal(
@@ -98,55 +100,51 @@ export function EmployerWaitlist({ label = "Gå med i väntelistan", className =
             aria-labelledby={`${ids}-title`}
             onClick={(event) => event.stopPropagation()}
           >
-            <button type="button" className="modal-close" onClick={close} aria-label="Stäng">×</button>
+            <button type="button" className="modal-close" onClick={close} aria-label={t.close}>×</button>
 
             {state === "done" ? (
               <div className="modal-done">
                 <span className="modal-check" aria-hidden="true">✓</span>
-                <h2 id={`${ids}-title`}>Tack! Vi hör av oss.</h2>
+                <h2 id={`${ids}-title`}>{t.doneTitle}</h2>
                 <p>
-                  Vi läser varje intresseanmälan och kontaktar er när vi öppnar för fler
-                  arbetsgivare. Har ni något att tillägga går det bra att mejla{" "}
+                  {t.doneBody}{" "}
                   <a href={`mailto:${siteConfig.supportEmail}`}>{siteConfig.supportEmail}</a>.
                 </p>
-                <button type="button" className="pill-cta" onClick={close}>Stäng</button>
+                <button type="button" className="pill-cta" onClick={close}>{t.close}</button>
               </div>
             ) : (
               <>
-                <h2 id={`${ids}-title`}>Väntelista för arbetsgivare</h2>
-                <p className="modal-lead">
-                  Vi har inget färdigt arbetsgivarverktyg än. Lämna era uppgifter så hör vi
-                  av oss först när vi öppnar.
-                </p>
+                <h2 id={`${ids}-title`}>{t.title}</h2>
+                <p className="modal-lead">{t.lead}</p>
 
                 <form className="modal-form" onSubmit={submit}>
                   <label>
-                    <span>Företag <i aria-hidden="true">*</i></span>
+                    <span>{t.company} <i aria-hidden="true">*</i></span>
                     <input ref={firstField} name="company" type="text" required maxLength={200} autoComplete="organization" />
                   </label>
                   <label>
-                    <span>Webbplats</span>
-                    <input name="website" type="text" maxLength={300} placeholder="foretag.se" autoComplete="url" />
+                    <span>{t.website}</span>
+                    <input name="website" type="text" maxLength={300} placeholder={t.websitePlaceholder} autoComplete="url" />
                   </label>
                   <label>
-                    <span>Ditt namn <i aria-hidden="true">*</i></span>
+                    <span>{t.name} <i aria-hidden="true">*</i></span>
                     <input name="contact_name" type="text" required maxLength={200} autoComplete="name" />
                   </label>
                   <label>
-                    <span>E-post <i aria-hidden="true">*</i></span>
+                    <span>{t.email} <i aria-hidden="true">*</i></span>
                     <input name="email" type="email" required maxLength={254} autoComplete="email" />
                   </label>
                   <label>
-                    <span>Telefon</span>
+                    <span>{t.phone}</span>
                     <input name="phone" type="tel" maxLength={40} autoComplete="tel" />
                   </label>
                   <label className="modal-wide">
-                    <span>Vad rekryterar ni? <i aria-hidden="true">*</i></span>
-                    <textarea name="hiring_needs" required maxLength={2000} rows={3} placeholder="Vilka roller, ungefär hur många och när?" />
+                    <span>{t.needs} <i aria-hidden="true">*</i></span>
+                    <textarea name="hiring_needs" required maxLength={2000} rows={3} placeholder={t.needsPlaceholder} />
                   </label>
                   <label className="modal-wide">
-                    <span>Övrigt</span>
-                    <textarea name="notes" maxLength={2000} rows={2} placeholder="Något annat vi bör veta?" />
+                    <span>{t.notes}</span>
+                    <textarea name="notes" maxLength={2000} rows={2} placeholder={t.notesPlaceholder} />
                   </label>
 
                   {/* Honeypot */}
@@ -156,11 +154,11 @@ export function EmployerWaitlist({ label = "Gå med i väntelistan", className =
 
                   <div className="modal-actions">
                     <p>
-                      Uppgifterna används bara för att kontakta er om Jobbly för arbetsgivare.{" "}
-                      <a href={siteConfig.privacyUrl} target="_blank" rel="noopener noreferrer">Så hanterar vi uppgifter</a>
+                      {t.consent}{" "}
+                      <a href={siteConfig.privacyUrl} target="_blank" rel="noopener noreferrer">{t.consentLink}</a>
                     </p>
                     <button type="submit" className="pill-cta" disabled={state === "sending"}>
-                      {state === "sending" ? "Skickar …" : "Skicka"} <span aria-hidden="true">→</span>
+                      {state === "sending" ? t.sending : t.submit} <span aria-hidden="true">→</span>
                     </button>
                   </div>
                 </form>

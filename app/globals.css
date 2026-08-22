@@ -446,3 +446,17 @@ img { max-width: 100%; height: auto; }
   .employer-cta { margin-inline: 20px; padding: 60px 24px; }
   .employer-hero { padding: 150px 20px 60px; }
 }
+
+/* Language --------------------------------------------------------------- */
+.language-toggle { display: inline-flex; align-items: center; gap: 2px; }
+.language-toggle a { color: var(--blue); transition: opacity .2s; }
+.language-toggle a:hover { opacity: .7; }
+.lang-suggestion { position: fixed; z-index: 400; left: 50%; bottom: 22px; display: flex; align-items: center; gap: 14px; max-width: calc(100% - 32px); padding: 12px 12px 12px 20px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,.96); box-shadow: 0 18px 44px rgba(24,52,85,.18); backdrop-filter: blur(14px); transform: translateX(-50%); }
+.lang-suggestion p { margin: 0; font-size: 14px; font-weight: 620; }
+.lang-suggestion button { padding: 9px 18px; border: 0; border-radius: 999px; color: white; background: var(--ink); cursor: pointer; font-family: inherit; font-size: 13px; font-weight: 740; transition: background .2s; }
+.lang-suggestion button:hover { background: var(--blue); }
+.lang-dismiss { width: 30px; padding: 0 !important; color: var(--ink-soft) !important; background: transparent !important; font-size: 19px; }
+.lang-dismiss:hover { color: var(--ink) !important; background: transparent !important; }
+@media (max-width: 620px) {
+  .lang-suggestion { flex-wrap: wrap; justify-content: center; border-radius: 20px; padding: 14px; text-align: center; }
+}

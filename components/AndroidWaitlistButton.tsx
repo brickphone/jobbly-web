@@ -1,8 +1,11 @@
-type Props = { className?: string };
+import { getDictionary, type Locale } from "@/lib/i18n";
+
+type Props = { locale: Locale; className?: string };
 
 // Deliberately not the Google Play badge — there is no Android app yet, so
 // advertising one would be false. Matches the App Store badge's height instead.
-export function AndroidWaitlistButton({ className = "" }: Props) {
+export function AndroidWaitlistButton({ locale, className = "" }: Props) {
+  const t = getDictionary(locale);
   return (
     <a className={`android-badge ${className}`} href="#android">
       <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -10,7 +13,7 @@ export function AndroidWaitlistButton({ className = "" }: Props) {
       </svg>
       <span>
         <small>Android</small>
-        Gå med i väntelistan
+        {t.employer.modal.cta}
       </span>
     </a>
   );

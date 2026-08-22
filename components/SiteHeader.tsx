@@ -1,10 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { getDictionary, paths, type Locale } from "@/lib/i18n";
 
-export function SiteHeader() {
+export function SiteHeader({ locale }: { locale: Locale }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const t = getDictionary(locale);
+  const p = paths[locale];
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -14,27 +17,30 @@ export function SiteHeader() {
   }, []);
 
   const close = () => setOpen(false);
+  // Section links must be absolute so they still work from the employer page.
+  const section = (hash: string) => `${p.home}#${hash}`;
+
   return (
     <header className={`site-header ${scrolled ? "is-scrolled" : ""}`}>
       <div className="header-left">
-        <a className="wordmark" href="/#top" aria-label="Jobbly, startsida" onClick={close}>Jobbly<span>.</span></a>
-        <a className="audience-link" href="/arbetsgivare" onClick={close}>Arbetsgivare</a>
+        <a className="wordmark" href={section("top")} aria-label={t.nav.home} onClick={close}>Jobbly<span>.</span></a>
+        <a className="audience-link" href={p.employers} onClick={close}>{t.nav.employers}</a>
       </div>
-      <nav className="desktop-nav" aria-label="Huvudmeny">
-        <a href="/#sa-funkar-det">Så funkar det</a>
-        <a href="/#tryggt">Trygghet</a>
-        <a href="/#fragor">Frågor</a>
+      <nav className="desktop-nav" aria-label={t.nav.menu}>
+        <a href={section("sa-funkar-det")}>{t.nav.howItWorks}</a>
+        <a href={section("tryggt")}>{t.nav.trust}</a>
+        <a href={section("fragor")}>{t.nav.faq}</a>
       </nav>
-      <a className="nav-cta" href="/#ladda-ner">Hämta appen <span aria-hidden="true">↗</span></a>
+      <a className="nav-cta" href={section("ladda-ner")}>{t.nav.cta} <span aria-hidden="true">↗</span></a>
       <button className={`menu-button ${open ? "is-open" : ""}`} type="button" aria-expanded={open} aria-controls="mobile-menu" onClick={() => setOpen(!open)}>
-        <span className="sr-only">Öppna meny</span><span /><span />
+        <span className="sr-only">{t.nav.openMenu}</span><span /><span />
       </button>
-      <nav className={`mobile-menu ${open ? "is-open" : ""}`} id="mobile-menu" aria-label="Mobilmeny">
-        <a href="/#sa-funkar-det" onClick={close}>Så funkar det</a>
-        <a href="/#tryggt" onClick={close}>Trygghet</a>
-        <a href="/#fragor" onClick={close}>Frågor</a>
-        <a href="/arbetsgivare" onClick={close}>Arbetsgivare</a>
-        <a href="/#ladda-ner" onClick={close}>Hämta appen</a>
+      <nav className={`mobile-menu ${open ? "is-open" : ""}`} id="mobile-menu" aria-label={t.nav.mobileMenu}>
+        <a href={section("sa-funkar-det")} onClick={close}>{t.nav.howItWorks}</a>
+        <a href={section("tryggt")} onClick={close}>{t.nav.trust}</a>
+        <a href={section("fragor")} onClick={close}>{t.nav.faq}</a>
+        <a href={p.employers} onClick={close}>{t.nav.employers}</a>
+        <a href={section("ladda-ner")} onClick={close}>{t.nav.cta}</a>
       </nav>
     </header>
   );
