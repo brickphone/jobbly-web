@@ -25,6 +25,9 @@ export const metadata: Metadata = {
     type: "website",
   },
   icons: { icon: "/assets/jobbly-logo.png", apple: "/assets/jobbly-logo.png" },
+  // Apple's own banner at the top of Safari on iOS. It reads "Öppna" when the app
+  // is already installed, and leaves every other browser untouched.
+  itunes: { appId: "6780935199" },
 };
 
 export const viewport: Viewport = {
