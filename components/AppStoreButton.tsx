@@ -1,11 +1,13 @@
 import Image from "next/image";
 import { siteConfig } from "@/lib/config";
 
-type Props = { light?: boolean; className?: string };
+// `placement` only labels the click in analytics, so the two badges on the page
+// can be told apart.
+type Props = { light?: boolean; className?: string; placement: string };
 
 // Apple's official badge, used unmodified as their marketing guidelines require.
 // `light` swaps to the white lockup for use on the blue section.
-export function AppStoreButton({ light = false, className = "" }: Props) {
+export function AppStoreButton({ light = false, className = "", placement }: Props) {
   const href = siteConfig.appStoreUrl || "#ladda-ner";
   return (
     <a
@@ -14,6 +16,8 @@ export function AppStoreButton({ light = false, className = "" }: Props) {
       target={siteConfig.appStoreUrl ? "_blank" : undefined}
       rel={siteConfig.appStoreUrl ? "noopener noreferrer" : undefined}
       aria-label="Hämta Jobbly på App Store"
+      data-umami-event="app-store-click"
+      data-umami-event-placement={placement}
     >
       <Image
         src={light ? "/assets/app-store-badge-se-white.svg" : "/assets/app-store-badge-se.svg"}

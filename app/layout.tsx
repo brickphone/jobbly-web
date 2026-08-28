@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import { Nunito } from "next/font/google";
 import "./globals.css";
 
@@ -35,7 +36,14 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="sv" className={nunito.variable}>
-      <body>{children}</body>
+      <body>
+        {children}
+        <Script
+          src="https://cloud.umami.is/script.js"
+          data-website-id="6d15981a-a8da-4210-ad7f-45d9a54a973f"
+          strategy="afterInteractive"
+        />
+      </body>
     </html>
   );
 }
