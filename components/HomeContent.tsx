@@ -28,7 +28,7 @@ export function HomeContent({ locale, jobCount }: Props) {
             <h1>{t.hero.titleTop}<br /><span>{t.hero.titleAccent}</span></h1>
             <p className="hero-lead">{t.hero.lead}</p>
             <div className="hero-actions">
-              <AppStoreButton placement="hero" />
+              <AppStoreButton locale={locale} placement="hero" />
               <AndroidWaitlistButton locale={locale} />
             </div>
             <div className="hero-note">
@@ -124,7 +124,7 @@ export function HomeContent({ locale, jobCount }: Props) {
 
         <section className="download section" id="ladda-ner">
           <div className="download-main reveal">
-            <div className="download-copy"><p className="kicker light">{t.download.kicker}</p><h2>{t.download.titleTop}<br />{t.download.titleBottom}</h2><p>{t.download.body}</p><AppStoreButton light placement="download-section" />{!siteConfig.appStoreUrl && <p className="store-status">{t.download.pending}</p>}</div>
+            <div className="download-copy"><p className="kicker light">{t.download.kicker}</p><h2>{t.download.titleTop}<br />{t.download.titleBottom}</h2><p>{t.download.body}</p><AppStoreButton locale={locale} light placement="download-section" />{!siteConfig.appStoreUrl && <p className="store-status">{t.download.pending}</p>}</div>
             <div className="download-phone" aria-hidden="true"><div className="device-frame"><Image src="/assets/jobbly-app-swipe.png" alt="" width={1206} height={2622} sizes="300px" /></div></div>
           </div>
           <aside className="android-card reveal" id="android">

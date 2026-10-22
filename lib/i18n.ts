@@ -17,6 +17,7 @@ const sv = {
   localeName: "Svenska",
   otherLocaleName: "English",
   skip: "Hoppa till innehåll",
+  appStore: { label: "Hämta Jobbly på App Store", alt: "Hämta i App Store" },
   nav: {
     home: "Jobbly, startsida",
     howItWorks: "Så funkar det",
@@ -172,6 +173,7 @@ const en: Dictionary = {
   localeName: "English",
   otherLocaleName: "Svenska",
   skip: "Skip to content",
+  appStore: { label: "Download Jobbly on the App Store", alt: "Download on the App Store" },
   nav: {
     home: "Jobbly, home",
     howItWorks: "How it works",
