@@ -16,12 +16,12 @@ const shared = {
 
 export const svMetadata: Metadata = {
   ...shared,
-  title: "Jobbly — Svep. Sök. Klart.",
+  title: "Jobbly — Swipa. Sök. Klart.",
   description:
     "Jobbly hittar jobb som passar dig och hjälper dig att skicka ansökan — direkt från mobilen.",
   openGraph: {
-    title: "Jobbly — Svep. Sök. Klart.",
-    description: "Upptäck jobb och ansök med ett svep. Jobbly gör resten.",
+    title: "Jobbly — Swipa. Sök. Klart.",
+    description: "Upptäck jobb och ansök med en swipe. Jobbly gör resten.",
     images: ["/assets/jobbly-logo.png"],
     locale: "sv_SE",
     type: "website",

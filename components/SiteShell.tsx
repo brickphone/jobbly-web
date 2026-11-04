@@ -1,15 +1,9 @@
 import Script from "next/script";
-import { Nunito } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "../app/globals.css";
 
-// Safari resolves `ui-rounded` to SF Pro Rounded on its own. Chrome and Android
-// don't support that generic, so Nunito stands in as the nearest rounded face.
-const nunito = Nunito({
-  subsets: ["latin", "latin-ext"],
-  weight: ["400", "600", "700", "800", "900"],
-  variable: "--font-rounded-fallback",
-  display: "swap",
-});
+const geist = Geist({ subsets: ["latin", "latin-ext"], variable: "--font-geist", display: "swap" });
+const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono", display: "swap" });
 
 // The Swedish and English trees are separate root layouts so each can declare its
 // own `lang`. Everything below that attribute is identical, and lives here once.
@@ -18,7 +12,7 @@ export function SiteShell({
   children,
 }: Readonly<{ lang: "sv" | "en"; children: React.ReactNode }>) {
   return (
-    <html lang={lang} className={nunito.variable}>
+    <html lang={lang} className={`${geist.variable} ${geistMono.variable}`}>
       <body>
         {children}
         <Script
